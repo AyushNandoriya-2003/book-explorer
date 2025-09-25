@@ -3,12 +3,14 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface initialState {
     books: any[];
+    bookDetails: any;
     loading: boolean;
     error: string | null;
 }
 
 const initialState: initialState = {
     books: [],
+    bookDetails: {},
     loading: false,
     error: null,
 };
@@ -22,10 +24,13 @@ const booksSlice = createSlice({
         },
         setLoading(state, action: PayloadAction<boolean>) {
             state.loading = action.payload
+        },
+        setBookDetails(state, action: PayloadAction<any>) {
+            state.bookDetails = action.payload
         }
     },
 });
 
-export const { setBooks, setLoading } = booksSlice.actions
+export const { setBooks, setLoading, setBookDetails } = booksSlice.actions
 
 export default booksSlice.reducer;

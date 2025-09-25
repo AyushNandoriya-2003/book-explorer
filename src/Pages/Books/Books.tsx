@@ -12,7 +12,7 @@ const SearchPage = () => {
 
     return (
         <Box sx={{ p: 2 }}>
-            <Box sx={{ pb: 2, display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #CDCDCD' }}>
+            <Box sx={{ pb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #CDCDCD' }}>
                 <Typography>Manage Books</Typography>
                 <Button
                     variant="contained"
