@@ -48,14 +48,13 @@ export default function SearchFormDialog({ open, onClose }: Props) {
     const handleSubmit = () => {
         const { title, author, genre } = values;
 
-        // Validation: At least one field must be filled
         if (!title.trim() && !author.trim() && !genre.trim()) {
             setError("Please enter at least one field.");
             return;
         }
 
         setError("");
-        getBooksBySearch(values, dispatch)
+        getBooksBySearch(values, dispatch, 0)
         setValues(defaultValues)
         onClose();
     };

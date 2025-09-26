@@ -6,6 +6,9 @@ interface initialState {
     bookDetails: any;
     loading: boolean;
     error: string | null;
+    query: { title?: string; author?: string; genre?: string } | null;
+    totalItems: number;
+    page: number;
 }
 
 const initialState: initialState = {
@@ -13,6 +16,9 @@ const initialState: initialState = {
     bookDetails: {},
     loading: false,
     error: null,
+    query: null,
+    totalItems: 0,
+    page: 0,
 };
 
 const booksSlice = createSlice({
@@ -20,20 +26,41 @@ const booksSlice = createSlice({
     initialState,
     reducers: {
         setBooks(state, action: PayloadAction<any[]>) {
-            state.books = action.payload
+            state.books = action.payload;
+        },
+        appendBooks(state, action: PayloadAction<any[]>) {
+            state.books = [...state.books, ...action.payload];
         },
         setLoading(state, action: PayloadAction<boolean>) {
-            state.loading = action.payload
+            state.loading = action.payload;
         },
         setBookDetails(state, action: PayloadAction<any>) {
-            state.bookDetails = action.payload
+            state.bookDetails = action.payload;
         },
         setError(state, action: PayloadAction<any>) {
-            state.error = action.payload
-        }
+            state.error = action.payload;
+        },
+        setQuery(state, action: PayloadAction<any>) {
+            state.query = action.payload;
+        },
+        setTotalItems(state, action: PayloadAction<number>) {
+            state.totalItems = action.payload;
+        },
+        setPage(state, action: PayloadAction<number>) {
+            state.page = action.payload;
+        },
     },
 });
 
-export const { setBooks, setLoading, setBookDetails, setError } = booksSlice.actions
+export const {
+    setBooks,
+    appendBooks,
+    setLoading,
+    setBookDetails,
+    setError,
+    setQuery,
+    setTotalItems,
+    setPage,
+} = booksSlice.actions;
 
 export default booksSlice.reducer;

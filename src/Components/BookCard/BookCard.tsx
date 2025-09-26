@@ -95,12 +95,36 @@ const BookCard = memo(({ book }: Props) => {
                     }}
                 >
                     <Box>
-                        <Typography variant="h6" gutterBottom noWrap>
+                        <Typography
+                            sx={{
+                                fontSize: '1.4rem',
+                                fontWeight: 600,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                            }}
+                        >
                             {book.title}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" noWrap>
+                        <Typography sx={{ fontWeight: 500, fontSize: '1rem' }}>
                             {book.authors?.join(", ")}
                         </Typography>
+                        {book.description && (
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{
+                                    mt: 1,
+                                    display: "-webkit-box",
+                                    WebkitLineClamp: 3,
+                                    WebkitBoxOrient: "vertical",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    fontSize: '0.8rem'
+                                }}
+                                dangerouslySetInnerHTML={{ __html: book.description }}
+                            />
+                        )}
                     </Box>
 
                     {book.notes && (

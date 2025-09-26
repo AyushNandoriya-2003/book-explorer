@@ -17,6 +17,7 @@ import {
 import { getBookById } from "../../Store/Books/BooksAction";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "@iconify/react";
+import Loader from "../../Components/Loader/Loader";
 
 const BookDetails = () => {
     // Hooks
@@ -33,8 +34,8 @@ const BookDetails = () => {
 
     if (loading) {
         return (
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
-                <CircularProgress size={50} />
+            <Box sx={{ display: "flex", justifyContent: "center", height: 'calc(100dvh - 4rem)', alignItems: 'center' }}>
+                <Loader />
             </Box>
         );
     }
@@ -166,11 +167,17 @@ const BookDetails = () => {
                                         Description
                                     </Typography>
                                     <Typography
-                                        variant="body1"
-                                        sx={{ color: "text.secondary", fontSize: '0.8rem', fontWeight: 400 }}
-                                    >
-                                        <span dangerouslySetInnerHTML={{ __html: description }} />
-                                    </Typography>
+                                        component={'span'}
+                                        sx={{
+                                            color: "text.secondary",
+                                            fontSize: '0.8rem',
+                                            fontWeight: 400,
+                                            "& ul": { pl: 2, mb: 1 },
+                                            "& li": { mb: 0.5 },
+                                            "& p": { mb: 1 }
+                                        }}
+                                        dangerouslySetInnerHTML={{ __html: description }}
+                                    />
                                 </Box>
                             }
 
