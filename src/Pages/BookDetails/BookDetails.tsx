@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     Box,
     Typography,
@@ -22,6 +22,7 @@ const BookDetails = () => {
     // Hooks
     const { bookDetails, loading } = useSelector((state: any) => state.books);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const { id } = useParams<{ id: string }>();
 
     useEffect(() => {
@@ -61,11 +62,12 @@ const BookDetails = () => {
     } = bookDetails;
 
     return (
-        <Container>
+        <Container sx={{ p: 2 }}>
             <Box sx={{ pb: 2, display: 'flex', gap: 2, alignItems: 'center', borderBottom: '1px solid #CDCDCD' }}>
                 <IconButton
                     size="small"
                     sx={{ border: theme => `1px solid ${theme.palette.primary.main}`, color: theme => theme.palette.primary.main }}
+                    onClick={() => navigate(-1)}
                 >
                     <Icon icon={'material-symbols:arrow-back-rounded'} />
                 </IconButton>
@@ -76,7 +78,7 @@ const BookDetails = () => {
                     <Card
                         sx={{
                             boxShadow: 4,
-                            borderRadius: 3,
+                            borderRadius: 1,
                             overflow: "hidden",
                             position: "sticky",
                             top: 20,
@@ -90,10 +92,8 @@ const BookDetails = () => {
                         />
                     </Card>
                 </Grid>
-
-                {/* Book Info */}
                 <Grid size={{ xs: 12, md: 8 }}>
-                    <Card sx={{ p: 1, boxShadow: 3, borderRadius: 3 }}>
+                    <Card sx={{ p: 1, boxShadow: 3, borderRadius: 1 }}>
                         <CardContent sx={{ p: 1, pb: '8px !important' }}>
                             <Typography variant="h4" fontWeight={600} gutterBottom>
                                 {title}
@@ -160,29 +160,26 @@ const BookDetails = () => {
                                     ))}
                                 </Box>
                             )}
-                            <Box sx={{ mt: 2 }}>
-                                <Typography variant="h6">
-                                    Description
-                                </Typography>
-                                <Typography
-                                    variant="body1"
-                                    sx={{ color: "text.secondary", fontSize: '0.8rem', fontWeight: 400 }}
-                                >
-                                    {description ? (
+                            {description &&
+                                <Box sx={{ mt: 2 }}>
+                                    <Typography variant="h6">
+                                        Description
+                                    </Typography>
+                                    <Typography
+                                        variant="body1"
+                                        sx={{ color: "text.secondary", fontSize: '0.8rem', fontWeight: 400 }}
+                                    >
                                         <span dangerouslySetInnerHTML={{ __html: description }} />
-                                    ) : (
-                                        "No description available."
-                                    )}
-                                </Typography>
-                            </Box>
+                                    </Typography>
+                                </Box>
+                            }
 
-                            {/* Preview Link */}
                             {previewLink && (
                                 <Box sx={{ mt: 2, textAlign: 'end' }}>
                                     <Button
                                         variant="outlined"
                                         color="primary"
-                                        sx={{ borderRadius: '8px', fontWeight: 500, textTransform: 'capitalize' }}
+                                        sx={{ fontWeight: 500, textTransform: 'capitalize' }}
                                         endIcon={<Icon icon="mage:preview" style={{ transform: 'scaleX(-1)' }} />}
                                         href={previewLink}
                                         target="_blank"

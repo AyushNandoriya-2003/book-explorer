@@ -1,68 +1,172 @@
-import { Card, CardContent, CardMedia, Typography, IconButton, Box } from "@mui/material";
+import { useState, useCallback, memo } from "react";
+import {
+    Card,
+    CardContent,
+    CardMedia,
+    Typography,
+    IconButton,
+    Box,
+    Chip,
+    Tooltip,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import Icon from "../Icon";
-import { useDispatch, useSelector } from 'react-redux';
-import { addFavouriteBook, deleteFavouriteBook } from "../../Store/Favourites/FavouritesSclice";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import {
+    addFavouriteBook,
+    deleteFavouriteBook,
+} from "../../Store/Favourites/FavouritesSclice";
+import AddEditFavouriteBook from "../../Pages/FavouriteBooks/AddEditFavouriteBook";
 
 interface Props {
     book: any;
 }
 
-const BookCard = ({ book }: Props) => {
+const BookCard = memo(({ book }: Props) => {
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
+
     const dispatch = useDispatch();
-    const favorites = useSelector((state: any) => state.favouriteBooks.favouriteBooks);
+    const favorites = useSelector(
+        (state: any) => state.favouriteBooks.favouriteBooks, shallowEqual);
     const isFavorite = favorites.some((b: any) => b.id === book.id);
 
-    const handleFavoriteClick = () => {
+    const handleFavoriteClick = useCallback(() => {
         if (isFavorite) {
             dispatch(deleteFavouriteBook(book.id));
         } else {
-            dispatch(addFavouriteBook(book));
+            setOpenDialog(true);
         }
-    };
+    }, [dispatch, isFavorite, book.id]);
+
+    const handleSaveToFavourite = useCallback(
+        (data: any) => {
+            dispatch(addFavouriteBook({ ...data, ...book }));
+            setOpenDialog(false);
+        },
+        [dispatch, book]
+    );
 
     return (
-        <Card sx={{ maxWidth: 280, borderRadius: 3, boxShadow: 3, display: 'flex', flexDirection: 'column' }}>
-            {book.thumbnail && (
-                <CardMedia
-                    component="img"
-                    height="180"
-                    image={book.thumbnail}
-                    alt={book.title}
-                    sx={{ borderTopLeftRadius: 12, borderTopRightRadius: 12, objectFit: 'cover' }}
-                />
-            )}
-            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <Box>
-                    <Typography variant="h6" gutterBottom noWrap>
-                        {book.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                        {book.authors?.join(", ")}
-                    </Typography>
-                </Box>
-
-                <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
-                    <IconButton
-                        onClick={handleFavoriteClick}
-                        color={isFavorite ? "error" : "default"}
-                        aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+        <>
+            <Card
+                sx={{
+                    borderRadius: 1,
+                    boxShadow: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                }}
+            >
+                {book.thumbnail ? (
+                    <CardMedia
+                        component="img"
+                        height="180"
+                        image={book.thumbnail}
+                        alt={book.title}
+                        sx={{
+                            borderTopLeftRadius: 12,
+                            borderTopRightRadius: 12,
+                            objectFit: "cover",
+                        }}
+                    />
+                ) : (
+                    <Box
+                        height="180px"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        sx={{
+                            borderTopLeftRadius: 12,
+                            borderTopRightRadius: 12,
+                            bgcolor: "grey.100",
+                        }}
                     >
-                        <Icon icon={isFavorite ? "mdi:heart" : "mdi:heart-outline"} width={24} height={24} />
-                    </IconButton>
+                        <Icon icon="mdi:book-open-variant" width={48} height={48} color="#9e9e9e" />
+                    </Box>
+                )}
 
-                    <IconButton
-                        component={Link}
-                        to={`/book/${book.id}`}
-                        color="primary"
-                        aria-label="View details"
+                <CardContent
+                    sx={{
+                        flexGrow: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        p: "1rem !important",
+                    }}
+                >
+                    <Box>
+                        <Typography variant="h6" gutterBottom noWrap>
+                            {book.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" noWrap>
+                            {book.authors?.join(", ")}
+                        </Typography>
+                    </Box>
+
+                    {book.notes && (
+                        <Typography variant="body2" color="text.secondary" sx={{ my: 1 }}>
+                            <strong>Notes:</strong> {book.notes}
+                        </Typography>
+                    )}
+
+                    {Array.isArray(book.tags) && book.tags.length > 0 && (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: 1,
+                                flexWrap: "wrap",
+                                mt: 1,
+                            }}
+                        >
+                            {book.tags.map((tag: string, idx: number) => (
+                                <Chip key={idx} label={tag} color="primary" variant="outlined" size="small" />
+                            ))}
+                        </Box>
+                    )}
+
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            mt: 1,
+                        }}
                     >
-                        <Icon icon="mdi:eye-outline" width={24} height={24} />
-                    </IconButton>
-                </Box>
-            </CardContent>
-        </Card>
+                        <Tooltip title={isFavorite ? "Remove from favorites" : "Add to favorites"} arrow>
+                            <IconButton
+                                onClick={handleFavoriteClick}
+                                color={isFavorite ? "error" : "default"}
+                                aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                            >
+                                <Icon
+                                    icon={isFavorite ? "mdi:heart" : "mdi:heart-outline"}
+                                    width={24}
+                                    height={24}
+                                />
+                            </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="View Book Details" arrow>
+                            <IconButton
+                                component={Link}
+                                to={`/book/${book.id}`}
+                                color="primary"
+                                aria-label="View book details"
+                            >
+                                <Icon icon="mdi:eye-outline" width={24} height={24} />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                </CardContent>
+            </Card>
+
+            <AddEditFavouriteBook
+                open={openDialog}
+                onSave={handleSaveToFavourite}
+                onClose={() => setOpenDialog(false)}
+            />
+        </>
     );
-};
+});
 
 export default BookCard;

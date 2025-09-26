@@ -27,10 +27,13 @@ const booksSlice = createSlice({
         },
         setBookDetails(state, action: PayloadAction<any>) {
             state.bookDetails = action.payload
+        },
+        setError(state, action: PayloadAction<any>) {
+            state.error = action.payload
         }
     },
 });
 
-export const { setBooks, setLoading, setBookDetails } = booksSlice.actions
+export const { setBooks, setLoading, setBookDetails, setError } = booksSlice.actions
 
 export default booksSlice.reducer;

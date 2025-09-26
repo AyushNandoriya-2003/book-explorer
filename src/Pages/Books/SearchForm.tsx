@@ -7,8 +7,8 @@ import {
     Button,
     TextField,
     IconButton,
-    Box,
     FormHelperText,
+    Typography,
 } from "@mui/material";
 import Icon from "../../Components/Icon";
 import { getBooksBySearch } from "../../Store/Books/BooksAction";
@@ -19,12 +19,21 @@ interface Props {
     onClose: () => void;
 }
 
+type Values = {
+    title: string
+    author: string
+    genre: string
+}
+
 export default function SearchFormDialog({ open, onClose }: Props) {
-    const [values, setValues] = useState({
+
+    const defaultValues: Values = {
         title: "",
         author: "",
         genre: "",
-    });
+    }
+
+    const [values, setValues] = useState<Values>(defaultValues);
 
     const [error, setError] = useState("");
 
@@ -47,6 +56,7 @@ export default function SearchFormDialog({ open, onClose }: Props) {
 
         setError("");
         getBooksBySearch(values, dispatch)
+        setValues(defaultValues)
         onClose();
     };
 
@@ -56,41 +66,38 @@ export default function SearchFormDialog({ open, onClose }: Props) {
             onClose={onClose}
             fullWidth
             maxWidth="sm"
-            sx={{ '& .MuiPaper-root': { width: '100%', borderRadius: '8px' } }}
+            sx={{ '& .MuiPaper-root': { width: '100%' } }}
         >
-            <DialogTitle>
-                Search Books
+            <DialogTitle sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography sx={{ pl: 1, fontSize: '1.25rem', fontWeight: 500 }}>Search Books</Typography>
                 <IconButton
                     aria-label="close"
                     onClick={onClose}
-                    sx={{ position: "absolute", right: 8, top: 8 }}
                 >
                     <Icon icon="mdi:close" width={24} height={24} />
                 </IconButton>
             </DialogTitle>
-            <DialogContent dividers>
-                <Box display="flex" flexDirection="column" gap={2}>
-                    <TextField
-                        label="Title"
-                        value={values.title}
-                        onChange={(e) => handleChange("title", e.target.value)}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Author"
-                        value={values.author}
-                        onChange={(e) => handleChange("author", e.target.value)}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Genre/Keyword"
-                        value={values.genre}
-                        onChange={(e) => handleChange("genre", e.target.value)}
-                        fullWidth
-                    />
+            <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <TextField
+                    label="Title"
+                    value={values.title}
+                    onChange={(e) => handleChange("title", e.target.value)}
+                    fullWidth
+                />
+                <TextField
+                    label="Author"
+                    value={values.author}
+                    onChange={(e) => handleChange("author", e.target.value)}
+                    fullWidth
+                />
+                <TextField
+                    label="Genre/Keyword"
+                    value={values.genre}
+                    onChange={(e) => handleChange("genre", e.target.value)}
+                    fullWidth
+                />
 
-                    {error && <FormHelperText error>{error}</FormHelperText>}
-                </Box>
+                {error && <FormHelperText error>{error}</FormHelperText>}
             </DialogContent>
 
             <DialogActions sx={{ p: 2, justifyContent: 'space-between' }}>
@@ -98,7 +105,7 @@ export default function SearchFormDialog({ open, onClose }: Props) {
                     variant="outlined"
                     startIcon={<Icon icon="mdi:close-circle-outline" width={20} height={20} />}
                     onClick={onClose}
-                    sx={{ borderRadius: '8px', textTransform: 'capitalize' }}
+                    sx={{ textTransform: 'capitalize' }}
                 >
                     Cancel
                 </Button>
@@ -106,7 +113,7 @@ export default function SearchFormDialog({ open, onClose }: Props) {
                     variant="contained"
                     startIcon={<Icon icon="mdi:magnify" width={20} height={20} />}
                     onClick={handleSubmit}
-                    sx={{ borderRadius: '8px', textTransform: 'capitalize' }}
+                    sx={{ textTransform: 'capitalize' }}
                 >
                     Search
                 </Button>
