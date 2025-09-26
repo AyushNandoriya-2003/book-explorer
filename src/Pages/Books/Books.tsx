@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getBooksBySearch } from "../../Store/Books/BooksAction";
 import { useState } from "react";
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import BookCard from "../../Components/BookCard/BookCard";
 import SearchFormDialog from "./SearchForm";
 import Loader from "../../Components/Loader/Loader";

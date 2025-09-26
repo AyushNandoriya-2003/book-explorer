@@ -16,7 +16,7 @@ import {
     addFavouriteBook,
     deleteFavouriteBook,
 } from "../../Store/Favourites/FavouritesSclice";
-import AddEditFavouriteBook from "../../Pages/FavouriteBooks/AddEditFavouriteBook";
+import AddFavouriteBook from "../../Pages/FavouriteBooks/AddFavouriteBook";
 
 interface Props {
     book: any;
@@ -26,8 +26,7 @@ const BookCard = memo(({ book }: Props) => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
 
     const dispatch = useDispatch();
-    const favorites = useSelector(
-        (state: any) => state.favouriteBooks.favouriteBooks, shallowEqual);
+    const favorites = useSelector((state: any) => state.favouriteBooks.favouriteBooks, shallowEqual);
     const isFavorite = favorites.some((b: any) => b.id === book.id);
 
     const handleFavoriteClick = useCallback(() => {
@@ -184,7 +183,7 @@ const BookCard = memo(({ book }: Props) => {
                 </CardContent>
             </Card>
 
-            <AddEditFavouriteBook
+            <AddFavouriteBook
                 open={openDialog}
                 onSave={handleSaveToFavourite}
                 onClose={() => setOpenDialog(false)}

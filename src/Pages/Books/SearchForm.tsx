@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
     Dialog,
     DialogTitle,
@@ -45,7 +45,7 @@ export default function SearchFormDialog({ open, onClose }: Props) {
         setError("");
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         const { title, author, genre } = values;
 
         if (!title.trim() && !author.trim() && !genre.trim()) {
@@ -54,10 +54,11 @@ export default function SearchFormDialog({ open, onClose }: Props) {
         }
 
         setError("");
-        getBooksBySearch(values, dispatch, 0)
-        setValues(defaultValues)
+        getBooksBySearch(values, dispatch, 0);
+        setValues(defaultValues);
         onClose();
-    };
+
+    }, [values, dispatch, onClose]);
 
     return (
         <Dialog

@@ -1,9 +1,10 @@
+import { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // Pages Imports
-import BookDetails from "../Pages/BookDetails/BookDetails";
-import FavouriteBooks from "../Pages/FavouriteBooks/FavouriteBooks";
-import Books from "../Pages/Books/Books";
+const BookDetails = lazy(() => import("../Pages/BookDetails/BookDetails"))
+const FavouriteBooks = lazy(() => import("../Pages/FavouriteBooks/FavouriteBooks"))
+const Books = lazy(() => import("../Pages/Books/Books"))
 
 const AppRoutes = () => {
     return (

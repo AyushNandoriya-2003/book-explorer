@@ -12,7 +12,7 @@ import {
     Autocomplete,
 } from "@mui/material";
 import Icon from "../../Components/Icon";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const defaultTagOptions = ['Fiction', 'Science', 'Fantasy', 'Programming', 'History', 'Thriller'];
 
@@ -22,22 +22,10 @@ interface NotesFormProps {
     onSave: (data: { notes: string, tags: string[] }) => void;
 }
 
-const AddEditFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
+const AddFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
     const [notes, setNotes] = useState<string>("");
     const [tags, setTags] = useState<string[]>([]);
     const [error, setError] = useState<string>("");
-
-    const handleSubmit = () => {
-        if (!notes.trim() && tags.length === 0) {
-            setError("Please add at least one note or tag.");
-            return;
-        }
-        setError("");
-
-        const finalTags = tags.map(tag => typeof tag === 'string' ? tag.trim() : '');
-        onSave({ notes: notes.trim(), tags: finalTags });
-        handleClose();
-    };
 
     const handleClose = () => {
         setError("");
@@ -45,6 +33,22 @@ const AddEditFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
         setTags([]);
         onClose();
     };
+
+    const handleTagsChange = (_: any, newValue: string[]) => {
+        setTags(newValue);
+        setError("");
+    };
+
+    const handleSubmit = useCallback(() => {
+        if (!notes.trim() && tags.length === 0) {
+            setError("Please add at least one note or tag.");
+            return;
+        }
+
+        const finalTags = tags.map(tag => typeof tag === "string" ? tag.trim() : "");
+        onSave({ notes: notes.trim(), tags: finalTags });
+        handleClose();
+    }, [notes, tags, onSave, handleClose]);
 
     return (
         <Dialog
@@ -78,10 +82,7 @@ const AddEditFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
                         freeSolo
                         options={defaultTagOptions}
                         value={tags}
-                        onChange={(_, newValue) => {
-                            setTags(newValue);
-                            setError("");
-                        }}
+                        onChange={handleTagsChange}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -121,4 +122,4 @@ const AddEditFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
     );
 };
 
-export default AddEditFavouriteBook;
+export default AddFavouriteBook;

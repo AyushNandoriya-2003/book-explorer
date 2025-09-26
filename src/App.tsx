@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 // Custom Components Imports
 import Navbar from "./Layout/Navbar";
 import AppRoutes from "./Routes/Routes";
-import { Container, createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
 import { store } from "./Store/store";
 
