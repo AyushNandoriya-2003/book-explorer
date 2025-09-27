@@ -11,16 +11,13 @@ import { store } from "./Store/store";
 // Styles Imports
 import './index.css'
 
+const theme = createTheme({
+  typography: { fontFamily: 'Lexend' },
+  shape: { borderRadius: 8 }
+});
+
 const App = () => {
 
-  const theme = createTheme({
-    typography: {
-      fontFamily: 'Lexend',
-    },
-    shape: {
-      borderRadius: 8,
-    },
-  });
 
   return (
     <ThemeProvider theme={theme}>
