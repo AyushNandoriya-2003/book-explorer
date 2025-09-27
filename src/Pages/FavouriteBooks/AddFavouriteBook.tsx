@@ -1,18 +1,21 @@
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    Button,
-    TextField,
-    Box,
-    FormHelperText,
-    IconButton,
-    Typography,
-    Autocomplete,
-} from "@mui/material";
-import Icon from "../../Components/Icon";
+// React Imports
 import { useCallback, useState } from "react";
+
+// MUI Imports
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import FormHelperText from "@mui/material/FormHelperText";
+import Typography from "@mui/material/Typography";
+import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
+
+// Icon Imports
+import Icon from "../../Components/Icon";
 
 const defaultTagOptions = ['Fiction', 'Science', 'Fantasy', 'Programming', 'History', 'Thriller'];
 
@@ -34,18 +37,33 @@ const AddFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
         onClose();
     };
 
+    const validateForm = (notesValue: string, tagsValue: string[]) => {
+        if (!notesValue.trim() && tagsValue.length === 0) {
+            return "Please add at least one note or tag.";
+        }
+        return "";
+    };
+
+    const handleNotesChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const value = event.target.value;
+        setNotes(value);
+        setError(validateForm(value, tags)); // Re-validate on change
+    };
+
+    // Tags change handler
     const handleTagsChange = (_: any, newValue: string[]) => {
         setTags(newValue);
-        setError("");
+        setError(validateForm(notes, newValue)); // Re-validate on change
     };
 
     const handleSubmit = useCallback(() => {
-        if (!notes.trim() && tags.length === 0) {
-            setError("Please add at least one note or tag.");
+        const errorMessage = validateForm(notes, tags);
+        if (errorMessage) {
+            setError(errorMessage);
             return;
         }
 
-        const finalTags = tags.map(tag => typeof tag === "string" ? tag.trim() : "");
+        const finalTags = tags.map(tag => (typeof tag === "string" ? tag.trim() : ""));
         onSave({ notes: notes.trim(), tags: finalTags });
         handleClose();
     }, [notes, tags, onSave, handleClose]);
@@ -60,10 +78,7 @@ const AddFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
         >
             <DialogTitle sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography sx={{ pl: 1, fontSize: '1.25rem', fontWeight: 500 }}>Add Notes & Tags</Typography>
-                <IconButton
-                    aria-label="close"
-                    onClick={handleClose}
-                >
+                <IconButton aria-label="close" onClick={handleClose}>
                     <Icon icon="mdi:close" width={24} height={24} />
                 </IconButton>
             </DialogTitle>
@@ -74,7 +89,7 @@ const AddFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
                     rows={3}
                     fullWidth
                     value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
+                    onChange={handleNotesChange}
                 />
                 <Box>
                     <Autocomplete
@@ -89,6 +104,11 @@ const AddFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
                                 label="Tags"
                                 placeholder="Add or select tags..."
                                 fullWidth
+                                helperText={
+                                    <Typography variant="caption" display="flex" alignItems="center" gap={0.5}>
+                                        <Icon icon={'material-symbols:info-outline-rounded'} fontSize={15} /> Press Enter to create a new tag
+                                    </Typography>
+                                }
                             />
                         )}
                     />
@@ -101,7 +121,6 @@ const AddFavouriteBook = ({ open, onClose, onSave }: NotesFormProps) => {
                 )}
 
             </DialogContent>
-
             <DialogActions sx={{ p: 2, justifyContent: 'space-between' }}>
                 <Button
                     variant="outlined"

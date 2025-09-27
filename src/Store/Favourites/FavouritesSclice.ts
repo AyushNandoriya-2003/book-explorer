@@ -1,8 +1,12 @@
+// Third Party Imports
 import { createSlice } from '@reduxjs/toolkit';
+
+// Types Imports
 import type { PayloadAction } from '@reduxjs/toolkit';
+import type { Book } from '../../types/book';
 
 interface initialState {
-    favouriteBooks: any[];
+    favouriteBooks: Book[];
 }
 
 const initialState: initialState = { favouriteBooks: [] };
@@ -11,7 +15,7 @@ const favoritesSlice = createSlice({
     name: 'favouriteBooks',
     initialState,
     reducers: {
-        addFavouriteBook(state, action: PayloadAction<any>) {
+        addFavouriteBook(state, action: PayloadAction<Book>) {
             state.favouriteBooks.push(action.payload);
         },
         editFavouriteBook(state, action: PayloadAction<{ id: string; notes?: string }>) {

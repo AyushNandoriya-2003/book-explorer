@@ -1,18 +1,26 @@
+// React Imports
 import { useCallback, useState } from "react";
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    Button,
-    TextField,
-    IconButton,
-    FormHelperText,
-    Typography,
-} from "@mui/material";
-import Icon from "../../Components/Icon";
-import { getBooksBySearch } from "../../Store/Books/BooksAction";
+
+// MUI Imports
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import FormHelperText from "@mui/material/FormHelperText";
+import Typography from "@mui/material/Typography";
+
+// Third Party Imports
 import { useDispatch } from "react-redux";
+
+// Store Imports
+import { getBooksBySearch } from "../../Store/Books/BooksAction";
+
+// Icon Imports
+import Icon from "../../Components/Icon";
+
 
 interface Props {
     open: boolean;
@@ -25,19 +33,16 @@ type Values = {
     genre: string
 }
 
-export default function SearchFormDialog({ open, onClose }: Props) {
+const SearchForm = ({ open, onClose }: Props) => {
 
     const defaultValues: Values = {
         title: "",
         author: "",
         genre: "",
     }
-
     const [values, setValues] = useState<Values>(defaultValues);
-
     const [error, setError] = useState("");
 
-    // Hooks
     const dispatch = useDispatch()
 
     const handleChange = (field: string, value: string) => {
@@ -70,10 +75,7 @@ export default function SearchFormDialog({ open, onClose }: Props) {
         >
             <DialogTitle sx={{ p: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography sx={{ pl: 1, fontSize: '1.25rem', fontWeight: 500 }}>Search Books</Typography>
-                <IconButton
-                    aria-label="close"
-                    onClick={onClose}
-                >
+                <IconButton aria-label="close" onClick={onClose}>
                     <Icon icon="mdi:close" width={24} height={24} />
                 </IconButton>
             </DialogTitle>
@@ -99,7 +101,6 @@ export default function SearchFormDialog({ open, onClose }: Props) {
 
                 {error && <FormHelperText error>{error}</FormHelperText>}
             </DialogContent>
-
             <DialogActions sx={{ p: 2, justifyContent: 'space-between' }}>
                 <Button
                     variant="outlined"
@@ -121,3 +122,5 @@ export default function SearchFormDialog({ open, onClose }: Props) {
         </Dialog>
     );
 }
+
+export default SearchForm

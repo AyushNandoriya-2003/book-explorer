@@ -1,8 +1,12 @@
+// Third Party Imports
 import { createSlice } from "@reduxjs/toolkit";
+
+// Types Imports
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { Book } from "../../types/book";
 
 interface initialState {
-    books: any[];
+    books: Book[];
     bookDetails: any;
     loading: boolean;
     error: string | null;
@@ -25,10 +29,10 @@ const booksSlice = createSlice({
     name: "books",
     initialState,
     reducers: {
-        setBooks(state, action: PayloadAction<any[]>) {
+        setBooks(state, action: PayloadAction<Book[]>) {
             state.books = action.payload;
         },
-        appendBooks(state, action: PayloadAction<any[]>) {
+        appendBooks(state, action: PayloadAction<Book[]>) {
             state.books = [...state.books, ...action.payload];
         },
         setLoading(state, action: PayloadAction<boolean>) {

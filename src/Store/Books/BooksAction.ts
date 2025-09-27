@@ -1,6 +1,11 @@
+// Third party Imports
 import axios from "axios";
-import type { AppDispatch } from "../store";
+
+// Actions Imports
 import { appendBooks, setBookDetails, setBooks, setError, setLoading, setPage, setQuery, setTotalItems } from "./BooksSlice";
+
+// Types Imports
+import type { AppDispatch } from "../store";
 
 interface queryData {
     title: string
@@ -11,11 +16,7 @@ interface queryData {
 const BASE_URL = 'https://www.googleapis.com/books/v1/volumes'
 const MAX_RESULTS = 10;
 
-export const getBooksBySearch = async (
-    { title, author, genre }: queryData,
-    dispatch: AppDispatch,
-    page: number = 0
-) => {
+export const getBooksBySearch = async ({ title, author, genre }: queryData, dispatch: AppDispatch, page: number = 0) => {
     dispatch(setLoading(true));
     try {
 

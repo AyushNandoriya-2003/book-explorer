@@ -3,13 +3,15 @@
 Discover, search, and manage your favorite books using the Google Books API. This is a React + TypeScript app built with Vite, Material UI, and Redux Toolkit, featuring infinite scroll, detailed book pages, and a local favorites list with notes and tags.
 
 ## Features
-- Search books by title, author, or genre/keyword
-- Infinite scrolling of results
+- Search books by title, author, or genre/keyword using Google Books API
+- Infinite scrolling of search results with pagination
 - View detailed information for any book
 - Add/remove books to a local favorites list
-- Add notes and tags to your favorite books
+- Add custom notes and tags to your favorite books
+- Responsive design with Material UI components
 - Client-side state management with Redux Toolkit
-- Modern UI built with Material UI
+- Lazy loading for optimal performance
+- Toast notifications for user feedback
 
 ## Tech Stack
 - React 19 + TypeScript + Vite 7
@@ -18,9 +20,10 @@ Discover, search, and manage your favorite books using the Google Books API. Thi
 - Axios for HTTP requests
 - React Router v7
 - React Infinite Scroll Component
-- Jest + Testing Library for unit/integration tests (jsdom environment)
+- Vitest + Testing Library for unit/integration tests (jsdom environment)
 - ESLint 9 for linting
-- Optional: React Toastify for notifications
+- React Toastify for notifications
+- @iconify/react for icons
 
 ## Getting Started
 
@@ -67,11 +70,8 @@ yarn lint
 # run all tests once
 npm test
 
-# watch mode (great during development)
-npm run test:watch
-
-# CI-friendly (serial) run
-npm run test:ci
+# run tests with UI
+npm run test:ui
 ```
 
 ## Scripts
@@ -79,9 +79,8 @@ npm run test:ci
 - `build`: Type-check then build production bundle
 - `preview`: Preview the built app
 - `lint`: Run ESLint on the project
-- `test`: Run Jest tests once (jsdom)
-- `test:watch`: Run tests in watch mode
-- `test:ci`: Run tests in-band for CI
+- `test`: Run Vitest tests once (jsdom)
+- `test:ui`: Run tests with UI interface
 
 ## Routes
 - `/` — Search and browse books
@@ -101,17 +100,29 @@ Requests are paginated with a page size of 10 and fetched incrementally as you s
 book-explorer/
   src/
     Components/
-      BookCard/BookCard.tsx
-      Icon/index.tsx
-      Loader/Loader.tsx
-    Layout/Navbar.tsx
+      BookCard/
+        BookCard.tsx
+        BookCard.test.tsx
+      Icon/
+        index.tsx
+      Loader/
+        Loader.tsx
+    Layout/
+      Navbar.tsx
     Pages/
-      Books/Books.tsx
-      Books/SearchForm.tsx
-      BookDetails/BookDetails.tsx
-      FavouriteBooks/FavouriteBooks.tsx
-      FavouriteBooks/AddFavouriteBook.tsx
-    Routes/Routes.tsx
+      Books/
+        Books.tsx
+        SearchForm.tsx
+        SearchForm.test.tsx
+      BookDetails/
+        BookDetails.tsx
+      FavouriteBooks/
+        FavouriteBooks.tsx
+        AddFavouriteBook.tsx
+        AddFavouriteBook.test.tsx
+    Routes/
+      Routes.tsx
+      AppRoutes.test.tsx
     Store/
       store.ts
       Books/
@@ -119,13 +130,16 @@ book-explorer/
         BooksSlice.ts
       Favourites/
         FavouritesSclice.ts
+    types/
+      book.ts
     App.tsx
     main.tsx
+    setupTests.ts
 ```
 
 ## State Management
 - `BooksSlice` stores the current query, results, pagination, loading and error state, and selected book details.
-- `FavouritesSclice` stores the list of favorite books with optional `notes` and `tags` fields.
+- `FavouritesSlice` stores the list of favorite books with optional `notes` and `tags` fields.
 
 ## Environment & API Keys
 This project uses the public Google Books API endpoints without a key for basic search and detail queries. If you need higher quotas or reliability, configure an API key and append it as `&key=YOUR_API_KEY` to requests in `src/Store/Books/BooksAction.ts`.
@@ -136,10 +150,10 @@ This project uses the public Google Books API endpoints without a key for basic 
 - Graceful loading and empty states
 
 ## Testing
-- Tests are written with Jest and Testing Library.
+- Tests are written with Vitest and Testing Library.
 - DOM-related tests run in a jsdom environment.
 - Test setup lives in `src/setupTests.ts`.
-- Example specs can be found under `__tests__` folders next to components/pages.
+- Test files are co-located with components (e.g., `ComponentName.test.tsx`).
 
 ## License
 MIT

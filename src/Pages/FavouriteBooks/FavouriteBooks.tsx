@@ -1,6 +1,16 @@
-import { useSelector } from "react-redux";
-import { Grid, Typography, Box } from "@mui/material";
+// MUI Imports
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+
+// Custom Component Imports
 import BookCard from "../../Components/BookCard/BookCard";
+
+// Third party Imports
+import { useSelector } from "react-redux";
+
+// Types Imports
+import type { Book } from "../../types/book";
 
 const FavouriteBooks = () => {
     const favourites = useSelector((state: any) => state.favouriteBooks.favouriteBooks);
@@ -18,11 +28,11 @@ const FavouriteBooks = () => {
                 Favourite Books
             </Typography>
 
-            <Box sx={{ height: 'calc(100dvh - 10.5rem)', overflow: 'auto', p: 2, mt: 2 }}>
-                {favourites.length > 0 ? (
+            <Box sx={{ height: { xs: 'calc(100dvh - 9.5rem)', md: 'calc(100dvh - 10.5rem)' }, overflow: 'auto', p: 2, mt: 2 }}>
+                {favourites?.length > 0 ? (
                     <Grid container spacing={3}>
-                        {favourites.map((book: any) => (
-                            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={book.id}>
+                        {favourites?.map((book: Book) => (
+                            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={book?.id}>
                                 <BookCard book={book} />
                             </Grid>
                         ))}

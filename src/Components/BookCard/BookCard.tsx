@@ -1,28 +1,33 @@
+// React Imports
 import { useState, useCallback, memo } from "react";
-import {
-    Card,
-    CardContent,
-    CardMedia,
-    Typography,
-    IconButton,
-    Box,
-    Chip,
-    Tooltip,
-} from "@mui/material";
+
+// MUI Imports
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Tooltip from "@mui/material/Tooltip";
+
+// Third Party Imports
 import { Link } from "react-router-dom";
-import Icon from "../Icon";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import {
-    addFavouriteBook,
-    deleteFavouriteBook,
-} from "../../Store/Favourites/FavouritesSclice";
+
+// Custom Component Imports
 import AddFavouriteBook from "../../Pages/FavouriteBooks/AddFavouriteBook";
 
-interface Props {
-    book: any;
-}
+// Store Imports
+import { addFavouriteBook, deleteFavouriteBook, } from "../../Store/Favourites/FavouritesSclice";
 
-const BookCard = memo(({ book }: Props) => {
+// Icon Imports
+import Icon from "../Icon";
+
+// Types Imports
+import type { Book } from "../../types/book";
+
+const BookCard = memo(({ book }: { book: Book }) => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
 
     const dispatch = useDispatch();

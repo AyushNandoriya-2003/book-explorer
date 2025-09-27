@@ -1,16 +1,31 @@
+// React Imports
+import { useState } from "react";
+
+// MUI Imports
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+
+// Third party Imports
 import { useDispatch, useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getBooksBySearch } from "../../Store/Books/BooksAction";
-import { useState } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+
+// Custom Component Imports
 import BookCard from "../../Components/BookCard/BookCard";
 import SearchFormDialog from "./SearchForm";
 import Loader from "../../Components/Loader/Loader";
 
-const SearchPage = () => {
-    const [openForm, setOpenForm] = useState(false);
-    const dispatch = useDispatch();
+// Store Imports
+import { getBooksBySearch } from "../../Store/Books/BooksAction";
 
+// Types Imports
+import type { Book } from "../../types/book";
+
+const SearchPage = () => {
+    const [openForm, setOpenForm] = useState<boolean>(false);
+
+    const dispatch = useDispatch();
     const { books, loading, error, query, page, totalItems } = useSelector((state: any) => state.books);
 
     const fetchMoreBooks = () => {
@@ -30,22 +45,22 @@ const SearchPage = () => {
                     Search Books
                 </Button>
             </Box>
-            <Box id="BookScrollDiv" sx={{ height: 'calc(100dvh - 10.5rem)', overflow: 'auto', p: 2, mt: 2 }}>
-                {loading && books.length === 0 ? (
+            <Box id="BookScrollDiv" sx={{ height: { xs: 'calc(100dvh - 10rem)', md: 'calc(100dvh - 10.5rem)' }, overflow: 'auto', p: 2, mt: 2 }}>
+                {loading && books?.length === 0 ? (
                     <Loader />
                 ) : error ? (
                     <Box sx={{ display: "flex", justifyContent: "center", alignItems: 'center', height: '100%' }}>
-                        <Typography variant="h6" color="error">{error}</Typography>
+                        <Typography variant="h6">{error}</Typography>
                     </Box>
-                ) : books.length === 0 ? (
-                    <Box sx={{ display: "flex", justifyContent: "center", alignItems: 'center', height: '100%' }}>
+                ) : books?.length === 0 ? (
+                    <Box sx={{ display: "flex", justifyContent: "center", alignItems: 'center', height: '100%', textAlign: 'center' }}>
                         <Typography variant="h6" color="text.secondary">No books found. Please perform a search.</Typography>
                     </Box>
                 ) : (
                     <InfiniteScroll
-                        dataLength={books.length}
+                        dataLength={books?.length}
                         next={fetchMoreBooks}
-                        hasMore={books.length < totalItems}
+                        hasMore={books?.length < totalItems}
                         loader={
                             <Box sx={{ mt: 2 }}>
                                 <Loader />
@@ -54,8 +69,8 @@ const SearchPage = () => {
                         scrollableTarget="BookScrollDiv"
                     >
                         <Grid container spacing={3} sx={{ mt: 2 }}>
-                            {books.map((book: any) => (
-                                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={book.id}>
+                            {books?.map((book: Book) => (
+                                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={book?.id}>
                                     <BookCard book={book} />
                                 </Grid>
                             ))}
