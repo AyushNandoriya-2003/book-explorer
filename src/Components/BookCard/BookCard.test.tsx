@@ -18,7 +18,7 @@ describe("BookCard component", () => {
     const book = {
         id: "1",
         title: "React Testing with Vitest",
-        authors: ["Ayush"],
+        authors: ["Test"],
         description: "<p>A testing guide</p>",
         thumbnail: "",
         tags: ["react", "testing"],
@@ -49,7 +49,7 @@ describe("BookCard component", () => {
     it("renders book title and author", () => {
         renderWithStore();
         expect(screen.getByText("React Testing with Vitest")).toBeInTheDocument();
-        expect(screen.getByText("Ayush")).toBeInTheDocument();
+        expect(screen.getByText("Test")).toBeInTheDocument();
     });
 
     it("shows tags if present", () => {

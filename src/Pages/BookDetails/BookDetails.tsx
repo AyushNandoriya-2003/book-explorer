@@ -1,22 +1,31 @@
+// React Imports
 import { useEffect } from "react";
+
+// MUI Imports
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import Chip from "@mui/material/Chip";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Container from "@mui/material/Container";
+
+// Third Party Imports
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    Box,
-    Typography,
-    Grid,
-    Card,
-    CardMedia,
-    CardContent,
-    Chip,
-    Divider,
-    Button,
-    IconButton,
-    Container,
-} from "@mui/material";
-import { getBookById } from "../../Store/Books/BooksAction";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon } from "@iconify/react";
+
+// Custom Component Imports
 import Loader from "../../Components/Loader/Loader";
+
+// Store Imports
+import { getBookById } from "../../Store/Books/BooksAction";
+
+// Icon Imports
+import { Icon } from "@iconify/react";
 
 const BookDetails = () => {
     // Hooks
@@ -65,8 +74,12 @@ const BookDetails = () => {
         <Container sx={{ p: 2 }}>
             <Box sx={{ pb: 2, display: 'flex', gap: 2, alignItems: 'center', borderBottom: '1px solid #CDCDCD' }}>
                 <IconButton
+                    data-testid="back-button"
                     size="small"
-                    sx={{ border: theme => `1px solid ${theme.palette.primary.main}`, color: theme => theme.palette.primary.main }}
+                    sx={{
+                        border: theme => `1px solid ${theme.palette.primary.main}`,
+                        color: theme => theme.palette.primary.main
+                    }}
                     onClick={() => navigate(-1)}
                 >
                     <Icon icon={'material-symbols:arrow-back-rounded'} />

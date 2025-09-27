@@ -6,7 +6,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import * as BooksAction from "../../Store/Books/BooksAction";
 
 // mock reducer (can be empty, since we only need dispatch)
-const mockReducer = (state = {}, action: any) => state;
+const mockReducer = (state = {}) => state;
 
 // mock getBooksBySearch
 vi.spyOn(BooksAction, "getBooksBySearch").mockImplementation(() => vi.fn());
